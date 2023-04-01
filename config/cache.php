@@ -31,7 +31,7 @@ return [
     |
     */
 
-    'Stores' => [
+    'stores' => [
 
         'apc' => [
             'driver' => 'apc',
