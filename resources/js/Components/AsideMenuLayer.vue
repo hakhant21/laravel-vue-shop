@@ -69,7 +69,7 @@ const asideLgCloseClick = (event) => {
         <AsideMenuList :menu="menu" @menu-click="menuClick" />
       </div>
 
-      <ul>
+      <ul class="mx-auto mb-4">
         <AsideMenuItem :item="logoutItem" @menu-click="menuClick" />
       </ul>
     </div>
