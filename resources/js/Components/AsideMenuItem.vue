@@ -32,14 +32,6 @@ const itemHref = computed(() =>
   props.item.route ? route(props.item.route) : props.item.href
 );
 
-// Add activeInactiveStyle
-const activeInactiveStyle = computed(() =>
-  props.item.route && route().current(props.item.route)
-    ? styleStore.asideMenuItemActiveStyle
-    : ""
-);
-
-
 const menuClick = (event) => {
   emit("menu-click", event, props.item);
 
@@ -57,14 +49,14 @@ const menuClick = (event) => {
       :href="itemHref ?? null"
       :target="item.target ?? null"
       class="flex cursor-pointer"
-      :class="activeInactiveStyle"
+      :class="asideMenuItemActiveStyle"
       @click="menuClick"
     >
       <BaseIcon
         v-if="item.icon"
         :path="item.icon"
         class="flex-none"
-        :class="activeInactiveStyle"
+        :class="asideMenuItemActiveStyle"
         w="w-16"
         :size="18"
       />
@@ -72,7 +64,7 @@ const menuClick = (event) => {
         class="grow text-ellipsis line-clamp-1"
         :class="[
           { 'pr-12': !hasDropdown },
-          activeInactiveStyle,
+          asideMenuItemActiveStyle,
         ]"
         >{{ item.label }}</span
       >
@@ -80,7 +72,7 @@ const menuClick = (event) => {
         v-if="hasDropdown"
         :path="isDropdownActive ? mdiMinus : mdiPlus"
         class="flex-none"
-        :class="activeInactiveStyle"
+        :class="asideMenuItemActiveStyle"
         w="w-12"
       />
     </component>
