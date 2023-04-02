@@ -1,5 +1,7 @@
 import {
     mdiMonitor,
+    mdiLogout,
+    mdiThemeLightDark,
   } from "@mdi/js";
 
   export default [

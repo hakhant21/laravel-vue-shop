@@ -49,7 +49,7 @@ const asideLgCloseClick = (event) => {
         <div
           class="text-center flex-1 lg:text-left lg:pl-6 xl:text-center xl:pl-0"
         >
-          <b class="font-black">One</b>
+          <b class="font-black">{{ $page.props.auth.user.name }}</b>
         </div>
         <button
           class="hidden lg:inline-block xl:hidden p-3"
@@ -64,12 +64,12 @@ const asideLgCloseClick = (event) => {
             ? 'aside-scrollbars-[slate]'
             : styleStore.asideScrollbarsStyle
         "
-        class="flex-1 overflow-y-auto overflow-x-hidden"
+        class="flex-1 overflow-y-auto overflow-x-hidden mt-2"
       >
         <AsideMenuList :menu="menu" @menu-click="menuClick" />
       </div>
 
-      <ul class="mx-auto mb-4">
+      <ul class="mb-4 text-white">
         <AsideMenuItem :item="logoutItem" @menu-click="menuClick" />
       </ul>
     </div>

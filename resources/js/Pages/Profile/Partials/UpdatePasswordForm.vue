@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { useStyleStore } from "@/Stores/style.js";
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -31,6 +32,8 @@ const updatePassword = () => {
         },
     });
 };
+
+const styleStore = useStyleStore();
 </script>
 
 <template>
@@ -52,7 +55,8 @@ const updatePassword = () => {
                     ref="currentPasswordInput"
                     v-model="form.current_password"
                     type="password"
-                    class="mt-1 block w-full"
+                    :class="styleStore.darkMode"
+                    class="mt-1 block w-full dark:text-gray-800"
                     autocomplete="current-password"
                 />
 
@@ -67,7 +71,8 @@ const updatePassword = () => {
                     ref="passwordInput"
                     v-model="form.password"
                     type="password"
-                    class="mt-1 block w-full"
+                    :class="styleStore.darkMode"
+                    class="mt-1 block w-full dark:text-gray-800"
                     autocomplete="new-password"
                 />
 
@@ -81,7 +86,8 @@ const updatePassword = () => {
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
+                    :class="styleStore.darkMode"
+                    class="mt-1 block w-full dark:text-gray-800"
                     autocomplete="new-password"
                 />
 
