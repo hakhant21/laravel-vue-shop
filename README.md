@@ -492,3 +492,7 @@ Global `lodash` and `axios` aren't needed, as we import them directly when neede
 
 - [Laravel Docs](https://laravel.com/docs)
 - [Inertia](https://inertiajs.com/)
+
+## Cloudinary
+
+- [Cloudinary Docs](https://github.com/cloudinary-devs/cloudinary-laravel/#installation)
