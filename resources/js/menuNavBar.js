@@ -12,12 +12,7 @@ import {
           icon: mdiAccount,
           label: "My Profile",
           route: "profile.edit",
-        },
-        {
-          icon: mdiLogout,
-          label: "Log Out",
-          isLogout: true,
-        },
+        }
       ],
     },
     {
