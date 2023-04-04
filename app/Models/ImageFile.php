@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class ImageFile extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

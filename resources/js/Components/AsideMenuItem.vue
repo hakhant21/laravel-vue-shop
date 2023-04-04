@@ -48,7 +48,7 @@ const menuClick = (event) => {
       :to="item.to ?? null"
       :href="itemHref ?? null"
       :target="item.target ?? null"
-      class="flex cursor-pointer"
+      class="flex cursor-pointer mb-4"
       :class="asideMenuItemActiveStyle"
       @click="menuClick"
     >
