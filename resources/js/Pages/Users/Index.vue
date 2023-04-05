@@ -17,8 +17,9 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 const nameRef = ref(null);
 const emailRef = ref(null);
 const roleRef = ref(null);
-const passwordRef = ref(null);
-
+const passwordRef =ref(null);
+const selectedRole = ref(null)
+const vendornameRef = ref(null)
 const confirmingUserCreation = ref(false);
 
 const props = defineProps({
@@ -29,14 +30,24 @@ const props = defineProps({
     roles: {
         type: Object,
         default: {}
+    },
+    sub_roles: {
+        type: Object,
+        default: {}
+    },
+    vendors: {
+        type: Object,
+        default: {}
     }
 });
 
 const form = useForm({
     name: '',
     email: '',
-    role: '',
-    password: ''
+    role:'',
+    password:'',
+    sub_role:'',
+    vendor_name:''
 });
 
 
@@ -80,27 +91,28 @@ const closeModal = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Action</th>
+                        <th >No</th>
+                        <th >Name</th>
+                        <th >Email</th>
+                        <th >Role</th>
+                        <th >Sub Role</th>
+                        <th >Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(user, index) in props.users.data" :key="index">
-                        <td>{{ ++index }}</td>
-                        <td data-label="Name">{{ user.name }}</td>
-                        <td data-label="Email">{{ user.email }}</td>
-                        <td data-label="User Type">{{ user.role }}</td>
-                        <td data-label="Action">
-                            <div class="mt-4">
-                                <button
-                                    class="border-2 outline-none hover:bg-green-600 border-green-600 rounded mx-2 px-2 py-1 hover:text-white mb-3">Edit</button>
-                                <button
-                                    class="border-2 outline-none hover:bg-red-600 border-red-600 rounded mx-2 px-2 py-1 hover:text-white">Permission</button>
-                            </div>
-                        </td>
+                    <tr v-for="(user,index) in props.users.data" :key="index">
+                                    <td>{{ ++index }}</td>     
+                                    <td data-label="Name">{{ user.data.name }}</td>
+                                    <td data-label="Email">{{ user.data.email }}</td>
+                                    <td data-label="Role">{{ user.data.role }}</td>
+                                    <td data-label="Sub Role" v-if="user.data.userVendor">{{ user.data.userVendor.sub_role }}</td>
+                                    <td v-else>-</td>
+                                    <td data-label="Action">
+                                        <div class="mt-4">
+                                            <button class="border-2 outline-none hover:bg-green-600 border-green-600 rounded mx-2 px-2 py-1 hover:text-white mb-3">Edit</button>
+                                            <button  class="border-2 outline-none hover:bg-red-600 border-red-600 rounded mx-2 px-2 py-1 hover:text-white">Permission</button>
+                                        </div>
+                                    </td>
                     </tr>
                 </tbody>
             </table>
@@ -130,28 +142,70 @@ const closeModal = () => {
                     <InputError :message="form.errors.email" class="mt-2" />
                 </div>
 
-                <div class="mt-6">
-                    <InputLabel for="password" value="text" class="sr-only" />
-                    <TextInput id="password" ref="passwordRef" v-model="form.password" type="password"
-                        class="mt-1 block w-full" placeholder="Password" />
-                    <InputError :message="form.errors.password" class="mt-2" />
-                </div>
-                <div class="mt-6">
-                    <select v-model="form.role" class="mt-1 block w-full border-1 border-gray-300 rounded">
-                        <option v-for="role in props.roles" :value="role.role">
-                            {{ role.role }}
-                        </option>
-                    </select>
-                    <InputError :message="form.errors.user_type" class="mt-2" />
-                </div>
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click.prevent="closeModal"> Cancel </SecondaryButton>
-                    <PrimaryButton class="ml-3" :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
-                        @click.prevent="createUser">
-                        Add
-                    </PrimaryButton>
-                </div>
-            </div>
-        </Modal>
+                        <div class="mt-6">
+                            <InputLabel for="password" value="text" class="sr-only" />
+                        <TextInput
+                            id="password"
+                            ref="passwordRef"
+                            v-model="form.password"
+                            type="password"
+                            class="mt-1 block w-full"
+                            placeholder="Password"
+                        />
+                        <InputError :message="form.errors.password" class="mt-2" />
+                        </div>
+                        <div class="mt-6">
+                            <select  v-model="form.role" class="capitalize mt-1 block w-full border-1 border-gray-300 rounded">
+                                <option  class="capitalize"
+                                    v-for="role in props.roles"
+                                    :value="role.role" 
+                                >
+                                <span class="capitalize">{{ role.role }}</span>
+                                </option>
+                            </select>
+                            <InputError :message="form.errors.role" class="mt-2" />
+                        </div>
+                        
+                        <div v-if="form.role === 'vendor'">
+                            <div class="mt-6">
+                                <select v-model="form.vendor_name" class="capitalize mt-1 block w-full border-1 border-gray-300 rounded">
+                                    <option 
+                                        v-for="vendor in props.vendors"
+                                        :value="vendor.id" class="capitalize"
+                                    >
+                                    <span class="capitalize">{{ vendor.name }}</span>
+
+                                    </option>
+                                </select>
+                                <InputError :message="form.errors.user_type" class="mt-2" />
+                            </div>
+                            <div class="mt-6">
+                                <select v-model="form.sub_role" class="capitalize mt-1 block w-full border-1 border-gray-300 rounded">
+                                    <option 
+                                        v-for="sub_role in props.sub_roles"
+                                        :value="sub_role.sub_role" class="capitalize"
+                                    >
+                                    <span class="capitalize">{{ sub_role.sub_role }}</span>
+
+                                    </option>
+                                </select>
+                                <InputError :message="form.errors.user_type" class="mt-2" />
+                            </div>
+
+                        </div>
+
+                        <div class="mt-6 flex justify-end">
+                            <SecondaryButton @click.prevent="closeModal"> Cancel </SecondaryButton>
+                            <PrimaryButton
+                                class="ml-3"
+                                :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing"
+                                @click.prevent="createUser"
+                            >
+                                Add
+                            </PrimaryButton>
+                        </div>
+                    </div>
+                </Modal>
     </LayoutAuthenticated>
 </template>
