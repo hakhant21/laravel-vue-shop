@@ -1,5 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
+import IconRounded from './IconRounded.vue';
+import { mdiCheckCircle } from '@mdi/js';
 
     const props = defineProps({
         message: String,
@@ -8,7 +10,7 @@ import { onMounted } from 'vue';
             default: 3000
         }
     })
-    
+
     onMounted( () => {
         setTimeout(() => emit('remove'), props.duration);
     })
@@ -20,7 +22,7 @@ import { onMounted } from 'vue';
     <div
         class="bg-white border border-slate-300  shadow-lg rounded-md gap-4 p-4 flex flex-row items-center justify-center">
         <section class="w-6 h-full flex flex-col items-center justify-start text-green-600 font-extrabold">
-            <font-awesome-icon icon="fa-regular fa-circle-check" bounce />
+            <IconRounded :icon="mdiCheckCircle" />
         </section>
         <section class="h-full flex flex-col items-start justify-end gap-1">
             <span class="text-base font-semibold text-zinc-800 antialiased">{{ props.message }}</span>

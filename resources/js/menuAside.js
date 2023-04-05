@@ -1,4 +1,5 @@
 import {
+    mdiAccountMultiple,
     mdiMonitor,
     mdiShopping,
   } from "@mdi/js";
@@ -10,13 +11,14 @@ import {
         label: "Dashboard",
     },
     {
+        route: 'users:index',
+        icon: mdiAccountMultiple,
+        label: "Users"
+    },
+    {
         route: 'vendors:products:index',
         icon: mdiShopping,
         label: "Products"
     },
-    {
-      route: 'users:index',
-      icon: mdiShopping,
-      label: "User Management"
-    }
+
   ];

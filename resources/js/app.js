@@ -1,5 +1,4 @@
 import "../css/main.css";
-
 import { createPinia } from "pinia";
 import { useStyleStore } from "@/Stores/style.js";
 import { darkModeKey, styleKey } from "@/config.js";
@@ -12,6 +11,7 @@ const appName =
   window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
 const pinia = createPinia();
+
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
