@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { useStyleStore } from '@/Stores/style';
-import MainLayout from '@/Layouts/MainLayout.vue';
+import LayoutAuthenticated from '@/Layouts/LayoutAuthenticated.vue'
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
@@ -9,14 +9,15 @@ import InputError from '@/Components/InputError.vue';
 const styleStore = useStyleStore();
 
 const form = useForm({
-    name: ""
+    name: "",
+    description: ""
 })
 
 </script>
 
 <template>
     <Head title="Vendor Products" />
-    <MainLayout>
+    <LayoutAuthenticated>
         <div class="max-w-5xl mx-auto flex justify-between mb-4 my-6">
             <h2 class="dark:text-white text-gray-600 font-bold text-lg">Create Product Form</h2>
             <Link :href="route('vendors:products:index')"
@@ -26,23 +27,33 @@ const form = useForm({
         <div class="max-w-sm mx-auto">
             <form>
                 <div>
-                <InputLabel for="name" value="Product Name" class="dark:text-white" />
+                    <InputLabel for="name" value="Product Name" class="dark:text-white" />
 
-                <TextInput
-                    id="name"
-                    v-model="form.name"
-                    type="text"
-                    :class="styleStore.darkMode"
-                    class="mt-1 block w-full dark:text-gray-800"
-                    autocomplete="name"
-                />
+                    <TextInput
+                        id="name"
+                        v-model="form.name"
+                        type="text"
+                        :class="styleStore.darkMode"
+                        class="mt-1 block w-full dark:text-gray-800"
+                        autocomplete="name"
+                    />
 
-                <InputError :message="form.errors.name" class="mt-2" />
-            </div>
+                    <InputError :message="form.errors.name" class="mt-2" />
+                </div>
                 <div class="mb-4">
+                    <InputLabel for="name" value="Product Description" class="dark:text-white" />
 
+                    <TextInput
+                        id="description"
+                        v-model="form.description"
+                        type="text"
+                        :class="styleStore.darkMode"
+                        class="mt-1 block w-full dark:text-gray-800"
+                        autocomplete="description"
+                    />
+                    <InputError :message="form.errors.description" class="mt-2" />
                 </div>
             </form>
         </div>
-    </MainLayout>
+    </LayoutAuthenticated>
 </template>
