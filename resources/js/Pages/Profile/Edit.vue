@@ -1,5 +1,5 @@
 <script setup>
-import MainLayout from '@/Layouts/MainLayout.vue';
+import LayoutAuthenticated from '@/Layouts/LayoutAuthenticated.vue'
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
@@ -18,7 +18,7 @@ defineProps({
 <template>
     <Head title="Profile" />
 
-    <MainLayout>
+    <LayoutAuthenticated>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>
         </template>
@@ -42,5 +42,5 @@ defineProps({
                 </div>
             </div>
         </div>
-    </MainLayout>
+    </LayoutAuthenticated>
 </template>

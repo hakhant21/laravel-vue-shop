@@ -1,12 +1,20 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import MainLayout from '@/Layouts/MainLayout.vue';
+import LayoutAuthenticated from '@/Layouts/LayoutAuthenticated.vue';
+
+const props = defineProps({
+    products: {
+        type: Object,
+        default: {}
+    }
+})
+console.log(props.products);
 
 </script>
 
 <template>
     <Head title="Vendor Products" />
-    <MainLayout>
+    <LayoutAuthenticated>
         <div class="max-w-5xl mx-auto flex justify-between mb-4 my-6">
             <h2 class="dark:text-white text-gray-600 font-bold text-lg">Products Lists</h2>
             <Link :href="route('vendors:products:create')"
@@ -35,5 +43,5 @@ import MainLayout from '@/Layouts/MainLayout.vue';
                 </tbody>
             </table>
         </div>
-    </MainLayout>
+    </LayoutAuthenticated>
 </template>
