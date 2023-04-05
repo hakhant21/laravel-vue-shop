@@ -1,7 +1,6 @@
 <script setup>
-import { Head ,useForm} from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
-
 import Modal from '@/Components/Modal.vue';
 import toast from "@/Stores/toast";
 import TextInput from '@/Components/TextInput.vue';
@@ -15,7 +14,7 @@ import LayoutAuthenticated from '@/Layouts/LayoutAuthenticated.vue';
 import CardBox from '@/Components/CardBox.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-const nameRef= ref(null);
+const nameRef = ref(null);
 const emailRef = ref(null);
 const roleRef = ref(null);
 const passwordRef =ref(null);
@@ -40,7 +39,7 @@ const props = defineProps({
         type: Object,
         default: {}
     }
-})
+});
 
 const form = useForm({
     name: '',
@@ -57,10 +56,10 @@ const createUser = () => {
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => {
-            closeModal()
+            closeModal();
             toast.add({
                 message: "User Added !"
-            })
+            });
         },
         onError: () => nameRef.value.focus(),
         onFinish: () => form.reset(),
@@ -80,20 +79,16 @@ const closeModal = () => {
 
 <template>
     <LayoutAuthenticated>
-    <Head title="User List" />
+
+        <Head title="User List" />
         <div class="py-10 mx-6">
-            <SectionTitleLineWithButton :icon="mdiShapePlus" title="Users List"  >
-                    <BaseButton
-                        label="Add"
-                        color="contrast"
-                        small
-                        rounded-full
-                        @click.prevent="confirmingUserCreation = true;"
-                    />
+            <SectionTitleLineWithButton :icon="mdiShapePlus" title="Users List">
+                <BaseButton label="Add" color="contrast" small rounded-full
+                    @click.prevent="confirmingUserCreation = true;" />
             </SectionTitleLineWithButton>
         </div>
-        <CardBox has-table>
-            <table class="mx-3">
+        <CardBox has-table class="mx-2">
+            <table>
                 <thead>
                     <tr>
                         <th >No</th>
@@ -123,41 +118,29 @@ const closeModal = () => {
             </table>
         </CardBox>
         <div class="p-3 lg:px-6 border-t border-gray-100 dark:border-slate-800 text-xs">
-                <pagination-links :links="props.users.links" />
+            <pagination-links :links="props.users.links" />
         </div>
         <Modal :show="confirmingUserCreation" @close="closeModal">
-                    <div class="p-6">
-                        <h2 class="text-lg font-medium text-gray-900">
-                            Add User
-                        </h2>
+            <div class="p-6">
+                <h2 class="text-lg font-medium text-gray-900">
+                    Add User
+                </h2>
 
-                        <div class="mt-6">
-                            <InputLabel for="username" value="text" class="sr-only" />
-                            <TextInput
-                                id="name"
-                                ref="nameRef"
-                                v-model="form.name"
-                                type="text"
-                                class="mt-1 block w-full"
-                                placeholder="Username"
-                            />
-                            <InputError :message="form.errors.name" class="mt-2" />
-                        </div>
-                        
-                        <div class="mt-6">
-                            <InputLabel for="email" value="text" class="sr-only" />
+                <div class="mt-6">
+                    <InputLabel for="username" value="text" class="sr-only" />
+                    <TextInput id="name" ref="nameRef" v-model="form.name" type="text" class="mt-1 block w-full"
+                        placeholder="Username" />
+                    <InputError :message="form.errors.name" class="mt-2" />
+                </div>
 
-                        <TextInput
-                            id="email"
-                            ref="emailRef"
-                            v-model="form.email"
-                            type="text"
-                            class="mt-1 block w-full"
-                            placeholder="Email"
-                        />
+                <div class="mt-6">
+                    <InputLabel for="email" value="text" class="sr-only" />
 
-                        <InputError :message="form.errors.email" class="mt-2" />
-                        </div>
+                    <TextInput id="email" ref="emailRef" v-model="form.email" type="text" class="mt-1 block w-full"
+                        placeholder="Email" />
+
+                    <InputError :message="form.errors.email" class="mt-2" />
+                </div>
 
                         <div class="mt-6">
                             <InputLabel for="password" value="text" class="sr-only" />
@@ -180,7 +163,7 @@ const closeModal = () => {
                                 <span class="capitalize">{{ role.role }}</span>
                                 </option>
                             </select>
-                            <InputError :message="form.errors.user_type" class="mt-2" />
+                            <InputError :message="form.errors.role" class="mt-2" />
                         </div>
                         
                         <div v-if="form.role === 'vendor'">

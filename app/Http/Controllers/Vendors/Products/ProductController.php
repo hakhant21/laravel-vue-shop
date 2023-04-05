@@ -6,6 +6,8 @@ use Inertia\Inertia;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Vendors\Products\CreateRequest;
+use App\Http\Requests\Vendors\Products\UpdateRequest;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProductController extends Controller
@@ -27,13 +29,20 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Vendors/Products/Create');
+        $colors = ['White','Black', 'Gray', 'Dark', 'Red'];
+
+        $sizes = ['S', 'M', 'L', 'XL', '2XL'];
+
+        return Inertia::render('Vendors/Products/Create', [
+            'colors' => $colors,
+            'sizes' => $sizes
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
         if($request->file('image')) {
             $imageUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
@@ -51,7 +60,7 @@ class ProductController extends Controller
             'size' => $request->size,
         ]);
 
-        return to_route('vendors:products:index')->with('success', 'Product created successfully...');
+        return to_route('vendors:products:index')->with('toast', 'Product created successfully...');
     }
 
     /**
@@ -77,7 +86,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateRequest $request, Product $product)
     {
         if($request->file('image')) {
             $imageUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
@@ -95,7 +104,7 @@ class ProductController extends Controller
             'size' => $request->size,
         ]);
 
-        return to_route('vendors:products:index')->with('success', 'Product updated successfully...');
+        return to_route('vendors:products:index')->with('toast', 'Product updated successfully...');
     }
 
     /**
@@ -105,6 +114,6 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        return to_route('vendors:products:index')->with('success', 'Product deleted successfully...');
+        return to_route('vendors:products:index')->with('toast', 'Product deleted successfully...');
     }
 }
