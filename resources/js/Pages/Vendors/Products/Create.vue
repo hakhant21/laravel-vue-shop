@@ -1,12 +1,16 @@
 <script setup>
-import { ref } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { useStyleStore } from '@/Stores/style';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 
-const nameRef = ref(null);
+const styleStore = useStyleStore();
+
+const form = useForm({
+    name: ""
+})
 
 </script>
 
@@ -19,14 +23,13 @@ const nameRef = ref(null);
                 class="py-1 px-4 rounded-lg dark:bg-indigo-500 dark:hover:bg-indigo-400  bg-slate-600 hover:bg-slate-500 text-slate-50 hover:text-slate-100">
             Go back</Link>
         </div>
-        <div class="max-w-5xl mx-auto">
+        <div class="max-w-sm mx-auto">
             <form>
                 <div>
-                <InputLabel for="name" value="Product Name" />
+                <InputLabel for="name" value="Product Name" class="dark:text-white" />
 
                 <TextInput
                     id="name"
-                    ref="nameRef"
                     v-model="form.name"
                     type="text"
                     :class="styleStore.darkMode"
