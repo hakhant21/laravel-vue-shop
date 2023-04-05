@@ -19,7 +19,8 @@ const nameRef= ref(null);
 const emailRef = ref(null);
 const roleRef = ref(null);
 const passwordRef =ref(null);
-
+const selectedRole = ref(null)
+const vendornameRef = ref(null)
 const confirmingUserCreation = ref(false);
 
 const props = defineProps({
@@ -30,6 +31,14 @@ const props = defineProps({
     roles: {
         type: Object,
         default: {}
+    },
+    sub_roles: {
+        type: Object,
+        default: {}
+    },
+    vendors: {
+        type: Object,
+        default: {}
     }
 })
 
@@ -37,7 +46,9 @@ const form = useForm({
     name: '',
     email: '',
     role:'',
-    password:''
+    password:'',
+    sub_role:'',
+    vendor_name:''
 });
 
 
@@ -89,15 +100,18 @@ const closeModal = () => {
                         <th >Name</th>
                         <th >Email</th>
                         <th >Role</th>
+                        <th >Sub Role</th>
                         <th >Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(user,index) in props.users.data" :key="index">
                                     <td>{{ ++index }}</td>     
-                                    <td data-label="Name">{{ user.name }}</td>
-                                    <td data-label="Email">{{ user.email }}</td>
-                                    <td data-label="User Type">{{ user.role }}</td>
+                                    <td data-label="Name">{{ user.data.name }}</td>
+                                    <td data-label="Email">{{ user.data.email }}</td>
+                                    <td data-label="Role">{{ user.data.role }}</td>
+                                    <td data-label="Sub Role" v-if="user.data.userVendor">{{ user.data.userVendor.sub_role }}</td>
+                                    <td v-else>-</td>
                                     <td data-label="Action">
                                         <div class="mt-4">
                                             <button class="border-2 outline-none hover:bg-green-600 border-green-600 rounded mx-2 px-2 py-1 hover:text-white mb-3">Edit</button>
@@ -158,16 +172,45 @@ const closeModal = () => {
                         <InputError :message="form.errors.password" class="mt-2" />
                         </div>
                         <div class="mt-6">
-                            <select v-model="form.role" class="mt-1 block w-full border-1 border-gray-300 rounded">
-                                <option 
+                            <select  v-model="form.role" class="capitalize mt-1 block w-full border-1 border-gray-300 rounded">
+                                <option  class="capitalize"
                                     v-for="role in props.roles"
                                     :value="role.role" 
                                 >
-                                    {{ role.role }}
+                                <span class="capitalize">{{ role.role }}</span>
                                 </option>
                             </select>
                             <InputError :message="form.errors.user_type" class="mt-2" />
                         </div>
+                        
+                        <div v-if="form.role === 'vendor'">
+                            <div class="mt-6">
+                                <select v-model="form.vendor_name" class="capitalize mt-1 block w-full border-1 border-gray-300 rounded">
+                                    <option 
+                                        v-for="vendor in props.vendors"
+                                        :value="vendor.id" class="capitalize"
+                                    >
+                                    <span class="capitalize">{{ vendor.name }}</span>
+
+                                    </option>
+                                </select>
+                                <InputError :message="form.errors.user_type" class="mt-2" />
+                            </div>
+                            <div class="mt-6">
+                                <select v-model="form.sub_role" class="capitalize mt-1 block w-full border-1 border-gray-300 rounded">
+                                    <option 
+                                        v-for="sub_role in props.sub_roles"
+                                        :value="sub_role.sub_role" class="capitalize"
+                                    >
+                                    <span class="capitalize">{{ sub_role.sub_role }}</span>
+
+                                    </option>
+                                </select>
+                                <InputError :message="form.errors.user_type" class="mt-2" />
+                            </div>
+
+                        </div>
+
                         <div class="mt-6 flex justify-end">
                             <SecondaryButton @click.prevent="closeModal"> Cancel </SecondaryButton>
                             <PrimaryButton
