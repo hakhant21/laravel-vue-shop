@@ -61,7 +61,7 @@ class ProductController extends Controller
     {
         return Inertia::render('Vendors/Products/Show', [
             'product' => $product
-        ])
+        ]);
     }
 
     /**
@@ -71,7 +71,7 @@ class ProductController extends Controller
     {
         return Inertia::render('Vendors/Products/Edit', [
             'product' => $product
-        ])
+        ]);
     }
 
     /**
