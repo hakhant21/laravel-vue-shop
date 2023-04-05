@@ -19,7 +19,8 @@ console.log(props.products);
             <h2 class="dark:text-white text-gray-600 font-bold text-lg">Products Lists</h2>
             <Link :href="route('vendors:products:create')"
                 class="py-1 px-4 rounded-lg dark:bg-indigo-500 dark:hover:bg-indigo-400  bg-slate-600 hover:bg-slate-500 text-slate-50 hover:text-slate-100">
-            Add</Link>
+                Add
+            </Link>
         </div>
         <div class="max-w-5xl mx-auto shadow-lg py-4 rounded-lg">
             <table>
