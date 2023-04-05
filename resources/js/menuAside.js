@@ -13,5 +13,10 @@ import {
         route: 'vendors:products:index',
         icon: mdiShopping,
         label: "Products"
+    },
+    {
+      route: 'users:index',
+      icon: mdiShopping,
+      label: "User Management"
     }
   ];
