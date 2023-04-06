@@ -49,7 +49,7 @@ class ProductController extends Controller
         }
 
         $product = Product::create([
-            'vendor_id' => 1,
+            'vendor_id' => auth()->user()->userVendor->vendor_id,
             'name' => $request->name,
             'description' => $request->description,
             'stock' => $request->stock,
@@ -93,7 +93,7 @@ class ProductController extends Controller
         }
 
         $product->update([
-            'vendor_id' => 1,
+            'vendor_id' => auth()->user()->userVendor->vendor_id,
             'name' => $request->name,
             'description' => $request->description,
             'stock' => $request->stock,
