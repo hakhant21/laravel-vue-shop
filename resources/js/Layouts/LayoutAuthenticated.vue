@@ -4,7 +4,6 @@ import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
 import menuAside from "@/menuAside.js";
 import menuNavBar from "@/menuNavBar.js";
-import { useMainStore } from "@/Stores/main.js";
 import { useStyleStore } from "@/Stores/style.js";
 import BaseIcon from "@/Components/BaseIcon.vue";
 import NavBar from "@/Components/NavBar.vue";
@@ -13,12 +12,7 @@ import AsideMenu from "@/Components/AsideMenu.vue";
 import ToastList from "@/Components/ToastList.vue";
 
 const layoutAsidePadding = "xl:pl-60";
-useMainStore().setUser({
-  name: "Admin user",
-  email: "admin@gov.com",
-  avatar:
-    "https://avatars.dicebear.com/api/avataaars/example.svg?options[top][]=shortHair&options[accessoriesChance]=93",
-});
+
 const styleStore = useStyleStore();
 
 const isAsideMobileExpanded = ref(false);
