@@ -16,7 +16,7 @@ class Vendor extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_vendor')
+        return $this->belongsToMany(User::class, 'user_vendors')
             ->withPivot('sub_role')
             ->withTimestamps();
     } 

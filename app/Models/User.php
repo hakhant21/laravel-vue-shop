@@ -45,6 +45,13 @@ class User extends Authenticatable
 
     public function userVendor()
     {
-        return $this->hasOne(UserVendor::class);
+        return $this->hasMany(UserVendor::class);
     }
+    
+    public function vendors()
+    {
+        return $this->belongsToMany(Vendor::class, 'user_vendors')
+            ->withPivot('sub_role')
+            ->withTimestamps();
+    } 
 }
