@@ -3,6 +3,7 @@ import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import toast from "@/Stores/toast";
+import _ from 'lodash';
 import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -19,8 +20,9 @@ const emailRef = ref(null);
 const roleRef = ref(null);
 const passwordRef =ref(null);
 const selectedRole = ref(null)
-const vendornameRef = ref(null)
+
 const confirmingUserCreation = ref(false);
+const confirmShowEditModal = ref(false);
 
 const props = defineProps({
     users: {
@@ -50,6 +52,13 @@ const form = useForm({
     vendor_name:''
 });
 
+const formEdit = useForm({
+    user_id:'',
+    sub_role:'',
+    vendor_id:''
+
+});
+
 
 const createUser = () => {
     form.post(route('users:create'), {
@@ -66,6 +75,19 @@ const createUser = () => {
     });
 };
 
+const editUser = () => {
+    formEdit.post(route('users:update',{
+        user: formEdit.user_id
+    }), {
+        preserveScroll: true,
+        onSuccess: () => {
+            closeEditModal()
+            toast.add({
+                message: "Successful update !"
+            })
+        },
+    });
+};
 const showAddUserModal = () => {
     confirmingUserCreation.value = true;
 };
@@ -75,6 +97,18 @@ const closeModal = () => {
     form.reset();
 };
 
+
+const showEditModal = (user) => {
+    formEdit.user_id = user.data.id;
+    formEdit.vendor_id = _.map(user.data.uservendor,'id').join(',');
+    formEdit.sub_role = _.map(user.data.vendor,'sub_role').join(',');
+    confirmShowEditModal.value = true;
+    
+};
+
+const closeEditModal = () => {
+    confirmShowEditModal.value = false;
+};
 </script>
 
 <template>
@@ -96,20 +130,22 @@ const closeModal = () => {
                         <th >Email</th>
                         <th >Role</th>
                         <th >Sub Role</th>
+                        <th>Vendor Name</th>
                         <th >Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(user,index) in props.users.data" :key="index">
                                     <td>{{ ++index }}</td>     
-                                    <td data-label="Name">{{ user.data.name }}</td>
+                                    <td data-label="Name">{{ user.data.name }} </td>
                                     <td data-label="Email">{{ user.data.email }}</td>
                                     <td data-label="Role">{{ user.data.role }}</td>
-                                    <td data-label="Sub Role" v-if="user.data.userVendor">{{ user.data.userVendor.sub_role }}</td>
-                                    <td v-else>-</td>
+                                    <td data-label="Sub Role" >{{ _.map(user.data.vendor,'sub_role').join(',') }}</td>
+                                 
+                                    <td data-label="Vendor Name">{{ _.map(user.data.uservendor,'name').join(',') }}</td>
                                     <td data-label="Action">
                                         <div class="mt-4">
-                                            <button class="border-2 outline-none hover:bg-green-600 border-green-600 rounded mx-2 px-2 py-1 hover:text-white mb-3">Edit</button>
+                                            <button @click.prevent="showEditModal(user)" class="border-2 outline-none hover:bg-green-600 border-green-600 rounded mx-2 px-2 py-1 hover:text-white mb-3">Edit</button>
                                             <button  class="border-2 outline-none hover:bg-red-600 border-red-600 rounded mx-2 px-2 py-1 hover:text-white">Permission</button>
                                         </div>
                                     </td>
@@ -127,7 +163,7 @@ const closeModal = () => {
                 </h2>
 
                 <div class="mt-6">
-                    <InputLabel for="username" value="text" class="sr-only" />
+                    <InputLabel for="username" value="User Name"  />
                     <TextInput id="name" ref="nameRef" v-model="form.name" type="text" class="mt-1 block w-full"
                         placeholder="Username" />
                     <InputError :message="form.errors.name" class="mt-2" />
@@ -155,6 +191,7 @@ const closeModal = () => {
                         <InputError :message="form.errors.password" class="mt-2" />
                         </div>
                         <div class="mt-6">
+                            <InputLabel for="Role" value="text" class="sr-only" />
                             <select  v-model="form.role" class="capitalize mt-1 block w-full border-1 border-gray-300 rounded">
                                 <option  class="capitalize"
                                     v-for="role in props.roles"
@@ -189,7 +226,7 @@ const closeModal = () => {
 
                                     </option>
                                 </select>
-                                <InputError :message="form.errors.user_type" class="mt-2" />
+                                <InputError :message="formEdit.errors.sub_role" class="mt-2" />
                             </div>
 
                         </div>
@@ -206,6 +243,50 @@ const closeModal = () => {
                             </PrimaryButton>
                         </div>
                     </div>
-                </Modal>
+        </Modal>
+        <Modal :show="confirmShowEditModal"  @close="closeEditModal">
+                    <div class="p-6">
+                        <h2 class="text-lg font-medium text-gray-900">
+                            Edit User
+                        </h2>
+                        <div class="mt-6">
+                            <InputLabel for="Vendor Name" value="text" class="sr-only" />
+                            <select v-model="formEdit.vendor_id" class="mt-1 block w-full border-gray-300 rounded">
+                                <option 
+                                        v-for="vendor in props.vendors"
+                                        :value="vendor.id"  class="capitalize"
+                                    >
+                                    <span class="capitalize">{{ vendor.name }}</span>
+
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mt-6">
+                            <InputLabel for="Sub Role" value="text" class="sr-only" />
+                            <select v-model="formEdit.sub_role" class="mt-1 block w-full border-gray-300 rounded">
+                                <option 
+                                        v-for="sub_role in props.sub_roles"
+                                        :value="sub_role.sub_role" class="capitalize"
+                                    >
+                                    <span class="capitalize">{{ sub_role.sub_role }}</span>
+
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mt-6 flex justify-end">
+                            <SecondaryButton @click.prevent="closeEditModal"> Cancel </SecondaryButton>
+
+                            <PrimaryButton
+                                class="ml-3"
+                                :class="{ 'opacity-25': formEdit.processing }"
+                                :disabled="formEdit.processing"
+                    
+                                @click="editUser"
+                            >
+                                Update
+                            </PrimaryButton>
+                        </div>
+                    </div>
+                </Modal> 
     </LayoutAuthenticated>
 </template>

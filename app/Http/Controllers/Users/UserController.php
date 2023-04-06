@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
        
-        $users = UserResource::collection(User::with('userVendor')->paginate(10))->withQueryString();
+        $users = UserResource::collection(User::paginate(10))->withQueryString();
         $roles = DB::table('users')
         ->select('role')
         ->distinct()
@@ -51,5 +51,15 @@ class UserController extends Controller
             ]);
         }
         return to_route('users:index');
+    }
+    public function update(User $user,Request $request)
+    {  
+        $vendordata=[
+            'vendor_id' => $request->vendor_id,
+            'sub_role' => $request->sub_role
+        ];
+        UserVendor::updateOrCreate([
+            'user_id'  => $user->id,
+        ],$vendordata);
     }
 }
