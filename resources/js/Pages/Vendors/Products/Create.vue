@@ -11,15 +11,6 @@ import LayoutAuthenticated from '@/Layouts/LayoutAuthenticated.vue';
 
 const styleStore = useStyleStore();
 
-const name = ref('');
-const description = ref('');
-const price = ref('');
-const stock = ref('');
-const quantity = ref('');
-const image = ref('');
-const colors = ref([]);
-const sizes = ref([]);
-
 const props = defineProps({
     colors: {
         type: Array,
@@ -34,9 +25,9 @@ const props = defineProps({
 const form = useForm({
     name: "",
     description: "",
-    price: "",
-    stock: "",
-    quantity: "",
+    price: 0,
+    stock: 0,
+    quantity: 0,
     image: "",
     color: [],
     size: [],
@@ -52,7 +43,7 @@ const createProduct = () => {
                 message: "Product created successfully..."
             });
         },
-        onError: () => name.value.focus(),
+        onError: () => form.name.focus(),
         onFinish: () => form.reset(),
     });
 }
@@ -75,7 +66,7 @@ const createProduct = () => {
                     <InputLabel for="name" value="Product Name" class="dark:text-white" />
 
                     <TextInput id="name" v-model="form.name" type="text" :class="styleStore.darkMode"
-                        class="mt-1 block w-full dark:text-gray-800" autocomplete="name" ref="name" />
+                        class="mt-1 block w-full dark:text-gray-800" autocomplete="name" />
 
                     <InputError :message="form.errors.name" class="mt-2" />
                 </div>
@@ -83,7 +74,7 @@ const createProduct = () => {
                     <InputLabel for="name" value="Product Description" class="dark:text-white" />
 
                     <TextInput id="description" v-model="form.description" type="text" :class="styleStore.darkMode"
-                        class="mt-1 block w-full dark:text-gray-800" autocomplete="description" ref="description" />
+                        class="mt-1 block w-full dark:text-gray-800" autocomplete="description" />
 
                     <InputError :message="form.errors.description" class="mt-2" />
                 </div>
@@ -91,7 +82,7 @@ const createProduct = () => {
                     <InputLabel for="price" value="Product Price" class="dark:text-white" />
 
                     <TextInput id="price" v-model="form.price" type="number" min="0" :class="styleStore.darkMode"
-                        class="mt-1 block w-full dark:text-gray-800" autocomplete="price" ref="price" />
+                        class="mt-1 block w-full dark:text-gray-800" autocomplete="price" />
 
                     <InputError :message="form.errors.price" class="mt-2" />
                 </div>
@@ -99,7 +90,7 @@ const createProduct = () => {
                     <InputLabel for="stock" value="Product Stock" class="dark:text-white" />
 
                     <TextInput id="stock" v-model="form.stock" type="number" min="0" :class="styleStore.darkMode"
-                        class="mt-1 block w-full dark:text-gray-800" autocomplete="stock" ref="stock" />
+                        class="mt-1 block w-full dark:text-gray-800" autocomplete="stock" />
 
                     <InputError :message="form.errors.stock" class="mt-2" />
                 </div>
@@ -107,7 +98,7 @@ const createProduct = () => {
                     <InputLabel for="quantity" value="Product Quantity" class="dark:text-white" />
 
                     <TextInput id="quantity" v-model="form.quantity" type="number" min="0" :class="styleStore.darkMode"
-                        class="mt-1 block w-full dark:text-gray-800" autocomplete="quantity" ref="quantity" />
+                        class="mt-1 block w-full dark:text-gray-800" autocomplete="quantity" />
 
                     <InputError :message="form.errors.quantity" class="mt-2" />
                 </div>
@@ -115,7 +106,7 @@ const createProduct = () => {
                 <div class="mb-4">
                     <InputLabel for="image" value="Product Image" class="dark:text-white" />
                     <input id="image" @input="form.image = $event.target.files[0]" type="file" :class="styleStore.darkMode"
-                        class="mt-1 block w-full dark:text-gray-100 border" autocomplete="image" ref="image" />
+                        class="mt-1 block w-full dark:text-gray-100 border" autocomplete="image" />
                     <InputError :message="form.errors.image" class="mt-2" />
                 </div>
 
@@ -126,7 +117,7 @@ const createProduct = () => {
                             <div v-for="color, index in props.colors" :key="index">
                                 <InputLabel for="index" :value="color" class="dark:text-white mr-2" />
                                 <input type="checkbox" id="color" v-model="form.color" :value="color"
-                                    :class="styleStore.darkMode" autocomplete="color" ref="colors" class="mr-3" />
+                                    :class="styleStore.darkMode" autocomplete="color" class="mr-3" />
                             </div>
                         </div>
                         <InputError :message="form.errors.color" class="mt-2" />
@@ -137,8 +128,8 @@ const createProduct = () => {
                         <div class="flex mt-2">
                             <div v-for="size, index in props.sizes" :key="index">
                                 <InputLabel for="index" :value="size" class="dark:text-white mr-2" />
-                                <input type="checkbox" id="size" v-model="form.size" :value="size"
-                                    :class="styleStore.darkMode" autocomplete="size" ref="sizes" class="mr-2" />
+                                <input type="checkbox" id="size" v-model="form.size" :size="color"
+                                    :class="styleStore.darkMode" autocomplete="size" class="mr-2" />
                             </div>
                         </div>
                         <InputError :message="form.errors.size" class="mt-2" />
@@ -151,10 +142,6 @@ const createProduct = () => {
                         :disabled="form.processing">
                         Save
                     </PrimaryButton>
-
-                    <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-                        <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
-                    </Transition>
                 </div>
             </form>
         </div>
