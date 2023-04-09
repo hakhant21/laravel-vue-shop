@@ -12,6 +12,15 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProductController extends Controller
 {
+
+    protected $colors = [];
+    protected $sizes = [];
+    public function __construct()
+    {
+        $this->colors = ['White','Black', 'Gray', 'Dark', 'Red'];
+
+        $this->sizes = ['S', 'M', 'L', 'XL', '2XL'];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,13 +38,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $colors = ['White','Black', 'Gray', 'Dark', 'Red'];
-
-        $sizes = ['S', 'M', 'L', 'XL', '2XL'];
-
         return Inertia::render('Vendors/Products/Create', [
-            'colors' => $colors,
-            'sizes' => $sizes
+            'colors' => $this->colors,
+            'sizes' => $this->sizes
         ]);
     }
 
@@ -79,7 +84,9 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         return Inertia::render('Vendors/Products/Edit', [
-            'product' => $product
+            'product' => $product,
+            'colors' => $this->colors,
+            'sizes' => $this->sizes
         ]);
     }
 

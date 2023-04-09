@@ -1,6 +1,6 @@
 <script setup>
     import { router, usePage } from '@inertiajs/vue3';
-    import { onMounted, onUnmounted, ref } from 'vue';
+    import { onUnmounted, ref } from 'vue';
     import ToastItem from './ToastItem.vue';
     import toast from "@/Stores/toast"
 
@@ -14,7 +14,7 @@
 
     onUnmounted(() => {
         router.on('finish', () => {
-            if(usePage().props.value.toast) {
+            if(usePage().props.message) {
                 toast.add({
                     message: page.props.value.toast
                 })
@@ -25,11 +25,11 @@
     const remove = (index) => {
         toast.remove(index)
     }
-    
+
 
 </script>
 <template>
-   <TransitionGroup 
+   <TransitionGroup
    tag="div"
    enter-from-class="translate-x-full opacity-0"
    enter-active-class="duration-500"
@@ -38,7 +38,7 @@
     class="fixed top-4 right-4 z-50 w-max h-auto space-y-5">
         <ToastItem v-for="(item,index) in items"
             :key="item.key"
-            :message="item.message" 
+            :message="item.message"
             :duration="3000"
             @remove="remove(index)"
         />

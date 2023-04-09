@@ -1,8 +1,8 @@
 import { reactive } from "vue";
 
+
 export default reactive({
-    items: [
-    ],
+    items: [],
 
     add(toast) {
         this.items.unshift({
